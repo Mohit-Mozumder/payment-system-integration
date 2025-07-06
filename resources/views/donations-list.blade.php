@@ -40,13 +40,15 @@
                     <td>{{ $donation->transaction_id }}</td>
                     <td>{{ ucfirst($donation->status) }}</td>
                     <td>
-                        @if($donation->status !== 'refunded')
-                        <form method="POST" action="{{ route('donations.refund', $donation) }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-warning btn-sm">Refund</button>
-                        </form>
-                        @endif
-                    </td>
+                    @if($donation->status !== 'refunded')
+                    <form method="POST" action="{{ route('donations.refund', $donation) }}" onsubmit="return confirm('Are you sure you want to refund this donation?')">
+                        @csrf
+                        <button type="submit" class="btn btn-warning btn-sm">Refund to Card</button>
+                    </form>
+                    @else
+                    <span class="badge bg-success">Refunded</span>
+                    <span class="text-muted small">({{ $donation->refunded_at->format('m/d/Y') }})</span>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
